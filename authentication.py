@@ -4,23 +4,37 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 import json
 
+PUBLIC_AUTH_LEVEL=3
+ACCESSIBLE_VIEW='VIEW'
+UESR_KEY='USER'
+
 def pre_handle_request(get_response):    
-    PUBLIC_AUTH_LEVEL=3
+    
+    
     def authorized_user(request):
         # cookie=request.COOKIES
         session=request.session
-        if session.__contains__('PERMISSIONS'):
-            print('user permissions --->')
-            print(session.__getitem__('PERMISSIONS'), end='\n======================\n')
+        provided_menu_to_user=session.__contains__(ACCESSIBLE_VIEW)
+        has_been_authorized=session.__contains__(UESR_KEY)
+        
+        if provided_menu_to_user:
+            print('trace accessible view')
+            print(session.__getitem__(ACCESSIBLE_VIEW), end='\n======================\n')
         else:
-            print('set permissions on session')
-            auth_level = PUBLIC_AUTH_LEVEL if not session.__contains__('USER_ID') else session.__getitem__('USER_ID').auth_level
-            permissions=View(ViewModel.objects.filter(auth_level__gte=auth_level).order_by('view_id'), many=True).data
-            print(permissions)
-            print(json.loads(json.dumps(permissions)))
-            session.__setitem__('PERMISSIONS', json.loads(json.dumps(permissions)))
-            print(type(json.loads(json.dumps(permissions)))) # generic
-            # print(type(JSONParser(io.BytesIO(JSONRenderer.render(permissions))))) # dict
+            if not has_been_authorized:
+                print('assign user info')
+                # TODO get user info contains user auth level
+                # psuedo code
+                # user <-- user info contains user id, auth level etc..
+                session.__setitem__(UESR_KEY, {'auth_level': PUBLIC_AUTH_LEVEL}) # example
+            auth_level = session.__getitem__(UESR_KEY).get('auth_level')
+            accessible_views=View(ViewModel.objects.filter(auth_level__gte=auth_level).order_by('view_id'), many=True).data
+            # TODO raise exception if user dosen't have authorized on requested resources (=view)
+            # psuedo code
+            # view <-- requested view id
+            # if not contains (e, l) # list(l) of accessible view info(e)
+            # raise exception
+            session.__setitem__(ACCESSIBLE_VIEW, json.loads(json.dumps(accessible_views)))
         return get_response(request)
     return authorized_user
     

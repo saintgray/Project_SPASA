@@ -1,30 +1,28 @@
-from spasa_model.model_auth import Auth
-# from spasa_model.model_view import View;
+from spasa_model.entry.model_view import ViewModel
+from spasa_model.entry.model_view import View
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+import json
 
-def pre_handle_request(get_response):
+def pre_handle_request(get_response):    
+    PUBLIC_AUTH_LEVEL=3
     def authorized_user(request):
         # cookie=request.COOKIES
         session=request.session
-        
         if session.__contains__('PERMISSIONS'):
             print('user permissions --->')
             print(session.__getitem__('PERMISSIONS'), end='\n======================\n')
         else:
-            #TODO MAP USER'S VIEW AUTHORITIES (=MENU, FUNCTIONS)
             print('set permissions on session')
-            session.__setitem__('PERMISSIONS', 'MY PERMISSION JSON DATA')
-            
-        # View.get_deferred_fields
-        # print(cookie.get('csrftoken'))
-        
-        # print('authorized_user process start ...')
-        # auth_list=Auth.objects.filter(auth_level=1)
-        # for i in range(len(auth_list)):
-        #     print('auth level : ' + auth_list[i].auth_level)
-        #     print('auth desc : ' + auth_list[i].auth_desc)
-        # print(Auth.objects.all())
+            auth_level = PUBLIC_AUTH_LEVEL if not session.__contains__('USER_ID') else session.__getitem__('USER_ID').auth_level
+            permissions=View(ViewModel.objects.filter(auth_level__gte=auth_level).order_by('view_id'), many=True).data
+            print(permissions)
+            print(json.loads(json.dumps(permissions)))
+            session.__setitem__('PERMISSIONS', json.loads(json.dumps(permissions)))
+            print(type(json.loads(json.dumps(permissions)))) # generic
+            # print(type(JSONParser(io.BytesIO(JSONRenderer.render(permissions))))) # dict
         return get_response(request)
-    # call inner function
     return authorized_user
     
+        
         

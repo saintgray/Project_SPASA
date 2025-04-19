@@ -1,6 +1,17 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang='ko'>
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/common.css' %}" rel="stylesheet">
+    <script src="{% static 'js/bootstrap.bundle.js' %}"> </script>
+</head>
 <body>
-    <h1>로그인 페이지입니다 12</h1>
+    {% include "header.html" %} 
+    {% include "content" %} 
+    {% include "footer.html" %} 
 </body>
+
 </html>

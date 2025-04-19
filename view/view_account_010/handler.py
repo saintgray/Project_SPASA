@@ -7,5 +7,4 @@ class Handler:
         super()
         
     def response(self, request):
-        print('handler 010 received')
         return HttpResponse(render(template_name='view_account_010', request=request))

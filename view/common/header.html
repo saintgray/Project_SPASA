@@ -1,4 +1,9 @@
 {% load static %}
 <div class="header">
-    <img src="{% static 'image/logo.png' %}" width="100px" height="100px" style="margin-top:-20px;margin-bottom:-20px;"/>
+    <a href="/view/main"><img id="logo" src="{% static 'image/logo.png' %}"></a>
+    <span style="position: absolute;right: 0;margin-right: 10px;height: 100%;">
+    <a href="/view/login"><img class="bs_icon" src="{% static 'image/person-circle.svg' %}"></a>
+    <a><img class="bs_icon" src="{% static 'image/gear.svg' %}"></a>
+</span>
 </div>
+

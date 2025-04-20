@@ -7,4 +7,4 @@ class Handler:
         super()
         
     def response(self, request):
-        return HttpResponse(render(template_name='view_account_010.html', request=request))
+        return HttpResponse(render(template_name='view_faq_010.html', request=request))

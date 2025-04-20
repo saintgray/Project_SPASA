@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/common.css' %}" rel="stylesheet">
+    <script src="{% static 'js/bootstrap.bundle.js' %}"> </script>
+</head>
+<body>
+    {% include "header.html" %}
+    <div class="container content-body">
+        <div class="row">
+            <div class="app-menu col-2">
+                {% include "menu.html" %} 
+            </div>
+            <div class="content col-8">
+                {% include "content_faq_010.html" %} 
+            </div>
+        </div>
+    </div>
+    {% include "footer.html" %} 
+</body>
+
+</html>

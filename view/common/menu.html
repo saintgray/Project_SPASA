@@ -1,0 +1,4 @@
+<div class="list-group">
+    {% for view in request.session.VIEW %}
+        <a href="{{ view.route_url }}" class="list-group-item list-group-item-action">{{ view.view_desc }}</a>    {% endfor %}
+    </div>

@@ -5,6 +5,7 @@ class ViewModel(models.Model):
     view_id=models.CharField(max_length=15, primary_key=True)
     view_desc=models.CharField(max_length=100)
     auth_level=models.CharField(max_length=1)
+    route_url=models.CharField(max_length=100)
     pop_up_yn=models.CharField(max_length=1)
     create_by=models.CharField(max_length=20)
     create_date=models.DateField()

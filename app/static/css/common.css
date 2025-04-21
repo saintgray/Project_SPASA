@@ -1,79 +1,105 @@
 html, body {
-    height: 100vh;
-    width: 100vw;
+    font-size: 1rem;
 }
 
 .header {
-    height:5vh;
-    /* margin-bottom: 0.5vh; */
+    height: 75px !important;
+    line-height: 75px !important;
     border-bottom: 2PX SOLID #DAD9D9;
     position: relative;
+
 }
 
 .header #logo {
-    padding-left:1vh;
-    padding-top:1.5vh;
-    width:120px;
-    height:90%;
+    padding-left:5px;
+    padding-top:3px;
+    padding-bottom:3px;
+    aspect-ratio: 4 / 2;
+    height: 50px;
     cursor: pointer;
 }
 
-.header .bs_icon {
-    width: 2vh;
-    height: 2vh;
-    /* padding-top: 1.5vh; */
-    margin-left: 1vh;
-    position: relative;
-    top: 1.5vh;
+.header .icon-group {
+    display: inline-block;
+    position: absolute;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    right:0;
+    height: inherit;
+    line-height: inherit;
 }
 
-/* .header::after {
-border: 1PX solid #DAD9D9;
-} */
+.header .icon-group a {
+    display: inline-block;
+    height:100%;
+    
+}
+
+.header .bs_icon {
+    height: 50%;
+    aspect-ratio: 1 / 1;
+    margin-left: 1vh;
+}
 
 .footer {
+    height: 120px !important;
     background-color: #DAD9D9;
     position: relative;
-    height: 10vh;
     display: flex;
     align-items: center;
 }
 
-
-.content-body, .app-menu {
-    min-height:85vh; /* 100 - header vh + footer vh*/
-}
-
 .content-body {
-    min-width: 100vw;
+    height:80% !important;
+    min-height:calc(100vh - 75px - 120px);
+    display: flex;
 }
 
 .app-menu {
     width: 16vw;
+    min-height: inherit;
     border-right: 2px solid #DAD9D9;
-    padding-top: 0.3vh;
+    padding: 0;
 }
 
-.content {
+.app-content {
     width: 84vw;
+    min-height:inherit;
+    position: relative;
 }
 
 /* on tablet, phone */
 @media (max-width: 576px) {
-    .app-menu {
-        width: 20vw;
+    /* .app-menu {
+    width: 20vw;
     }
     
     .content {
-        width: 80vw;
+    width: 80vw;
     }   
     
     body {
-        font-size: 0.5rem;
+    font-size: 0.5rem;
+    } */
+    /* .header #logo {
+    width:10vh;
+    } */
+}
+
+
+@media (max-height: 576px) {
+    .content-body {
+        min-height:500px;
     }
-    .header #logo {
-        width:10vh;
+    .header {
+        height: 50px !important;
+        line-height: 50px !important;
     }
+    .footer {
+        height: 50px !important;
+    }
+    
+    
 }
 
 

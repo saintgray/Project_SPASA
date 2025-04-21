@@ -13,7 +13,7 @@ class MemberModel(models.Model):
         db_table='TB_SPS_C_MEMBER010'
         app_label='spasa_analyze'
         
-class View(serializers.ModelSerializer):
+class Member(serializers.ModelSerializer):
     class Meta:
         model=MemberModel
         fields='__all__'

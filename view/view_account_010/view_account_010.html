@@ -7,20 +7,111 @@
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
     <link href="{% static 'css/common.css' %}" rel="stylesheet">
     <script src="{% static 'js/bootstrap.bundle.js' %}"> </script>
+    <script src="{% static 'js/axios.js' %}"> </script>
+    <style>
+        #login-form {
+            border: 1px solid #DAD9D9;
+            border-radius: 1rem;
+            border: 1px solid #DAD9D9;
+            
+            width: 50%;
+            aspect-ratio: 1 / 1;
+            max-width:400px;
+            
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            
+            
+        }
+        #login-form #logo {
+            height:100%; 
+            aspect-ratio: 4 / 2;
+        }
+        /* on tablet, phone */
+        @media (max-width: 576px) {
+            #login-form {
+                aspect-ratio: 1 / 2;
+            }
+            #login-form #logo {
+                aspect-ratio: 2 / 1;
+            }
+        }
+        @media (max-height: 576px) {
+            #login-form {
+                aspect-ratio: 5 / 3;
+            }
+        }
+    </style>
 </head>
 <body>
     {% include "header.html" %}
-    <div class="container content-body">
-        <div class="row">
-            <div class="app-menu col-2">
-                {% include "menu.html" %} 
-            </div>
-            <div class="content col-8">
-                {% include "content_account_010.html" %} 
-            </div>
+    <div class="content-body">
+        <div class="app-menu">
+            {% include "menu.html" %} 
+        </div>
+        <div class="app-content">
+            {% include "content_account_010.html" %} 
         </div>
     </div>
     {% include "footer.html" %} 
 </body>
 
 </html>
+<script>
+    window.onload=function() {
+        // target nodes
+        const toggle_register = document.querySelector('#toggle-register > input');
+
+        
+        addEventListener("keypress", (e) => {
+            // skip process otherwise keycode "Enter"
+            if (e.keyCode !== 13) return;
+            if (toggle_register.checked) {
+                // Sign up
+                // TODO psudo code
+                alert('회원가입을 진행합니다..... [needs psudo code]');
+                // psudo code
+                // (call sign up api) <-- if input values are validated
+                // (go to main) <-- when response status 200
+                //     else alert
+                //       (400: user duplicated)
+                //       (500: internal server error)
+            } else {
+                // Sign in
+                const data = new FormData();
+                data.append('form_id', document.getElementById('form_id').value);
+                data.append('form_pw', document.getElementById('form_pw').value);
+                axios.post('/api/sign-in/', data)
+                .then(function(resp){
+                    if(resp.data.status===200) window.open('/view/main', '_self');
+                    if(resp.data.status===404) alert('아이디 혹은 비밀번호가 일치하지 않습니다');
+                    if(resp.data.status===500) alert('시스템 오류가 발생하였습니다');
+                })
+                .catch(function(err){
+                    alert('시스템 오류가 발생하였습니다');
+                });
+            }
+        });
+        
+        toggle_register.addEventListener('click', (e) => {
+            if (e.target.checked) {
+                document.querySelectorAll('#form-groups > .input-group input').forEach(e => {
+                    console.log(e);
+                    e.value='';
+                });
+                // [1] : password input group node
+                var confirm_password=document.querySelectorAll('.input-group')[1].cloneNode(true);
+                var input = confirm_password.querySelector('input');
+                input.id='form_check_pw';
+                input.placeholder='Check password';
+                document.getElementById('form-groups').appendChild(confirm_password);
+            } else {
+                var input_groups=document.querySelectorAll('#form-groups > .input-group');
+                input_groups[input_groups.length - 1].remove();
+            }
+        });
+    }
+    
+</script>

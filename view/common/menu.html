@@ -1,4 +1,42 @@
-<div class="list-group">
+<div class="list-group" 
+     style="border-top-left-radius: 0; 
+            border-top-right-radius: 0; 
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;"
+>
     {% for view in request.session.VIEW %}
-        <a href="{{ view.route_url }}" class="list-group-item list-group-item-action">{{ view.view_desc }}</a>    {% endfor %}
-    </div>
+    <a href="{{ view.route_url }}" class="list-group-item list-group-item-action">
+        {{ view.view_desc }}    
+    </a>
+    {% endfor %}
+    <!-- {% for view in request.session.VIEW %}
+    <a href="{{ view.route_url }}" class="list-group-item list-group-item-action">
+        {{ view.view_desc }}    
+    </a>
+    {% endfor %}
+    {% for view in request.session.VIEW %}
+    <a href="{{ view.route_url }}" class="list-group-item list-group-item-action">
+        {{ view.view_desc }}    
+    </a>
+    {% endfor %}
+    {% for view in request.session.VIEW %}
+    <a href="{{ view.route_url }}" class="list-group-item list-group-item-action">
+        {{ view.view_desc }}    
+    </a>
+    {% endfor %}
+    {% for view in request.session.VIEW %}
+    <a href="{{ view.route_url }}" class="list-group-item list-group-item-action">
+        {{ view.view_desc }}    
+    </a>
+    {% endfor %}
+    {% for view in request.session.VIEW %}
+    <a href="{{ view.route_url }}" class="list-group-item list-group-item-action">
+        {{ view.view_desc }}    
+    </a>
+    {% endfor %}
+    {% for view in request.session.VIEW %}
+    <a href="{{ view.route_url }}" class="list-group-item list-group-item-action">
+        {{ view.view_desc }}    
+    </a>
+    {% endfor %} -->
+</div>

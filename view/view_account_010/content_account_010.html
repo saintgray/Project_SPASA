@@ -1,2 +1,34 @@
 {% load static %}
-<h1>Login</h1>
+<div id="login-form">
+    <div style="height:20%;text-align: center; padding: 1vh;">
+        <img id="logo" src="{% static 'image/logo.png' %}" />
+    </div>
+    <div id="form-groups" style="height:70%; padding-left: 5%; display: flex; padding-right: 5%; justify-content: center; flex-direction: column;">
+        <div class="input-group flex-nowrap mb-2">
+            <span class="input-group-text" id="addon-wrapping">
+                <img src="{% static 'image/person-circle.svg' %}" />
+            </span>
+            <input type="text" id="form_id" class="form-control" placeholder="Id" aria-label="user_id" aria-describedby="addon-wrapping" />
+        </div>
+        <div class="input-group flex-nowrap mb-2">
+            <span class="input-group-text" id="addon-wrapping">
+                <img src="{% static 'image/key.svg' %}" />
+            </span>
+            <input type="password" id="form_pw" class="form-control" placeholder="Password" aria-label="password" aria-describedby="addon-wrapping" />
+        </div>
+    </div>
+    
+    
+    <div style="height:10%; font-size: 0.7rem; text-align: right; padding-right: 1vw; padding-top: 1vh">
+        <label style="display: inline-block; color: #959393;" class="form-check form-check-label" for="switchCheckDefault">
+            사용자 등록
+        </label>    
+        <div id="toggle-register" style="display: inline-block;" class="form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+        </div>
+    </div>
+
+    <!-- <div style="height:10%; font-size: 0.7rem; text-align: right; padding-right: 1vw; padding-top: 1vh">
+        <a href="/register" style="color: #959393;">사용자 등록</a>
+    </div> -->
+</div>

@@ -1,9 +1,10 @@
 {% load static %}
 <div class="header">
     <a href="/view/main"><img id="logo" src="{% static 'image/logo.png' %}"></a>
-    <span style="position: absolute;right: 0;margin-right: 10px;height: 100%;">
-    <a href="/view/login"><img class="bs_icon" src="{% static 'image/person-circle.svg' %}"></a>
-    <a><img class="bs_icon" src="{% static 'image/gear.svg' %}"></a>
-</span>
+    <span class="icon-group">
+        <a href="/view/login"><img class="bs_icon" src="{% static 'image/person-circle.svg' %}"></a>
+        <a><img class="bs_icon" src="{% static 'image/gear.svg' %}"></a>
+        <a><img class="bs_icon" src="{% static 'image/power.svg' %}"></a>
+    </span>
 </div>
 

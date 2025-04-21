@@ -10,20 +10,17 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    {% include "header.html" %}
-    <div class="container content-body">
-        <div class="row">
-            <div class="app-menu col-2">
-                {% include "menu.html" %} 
-            </div>
-            <div class="content col-8">
-                {% include "content_main_010.html" %} 
-            </div>
-        </div>
-    </div>
-    {% include "footer.html" %} 
+  {% include "header.html" %}
+  <div class="content-body">
+      <div class="app-menu">
+          {% include "menu.html" %} 
+      </div>
+      <div class="app-content">
+        {% include "content_main_010.html" %} 
+      </div>
+  </div>
+  {% include "footer.html" %} 
 </body>
-
 </html>
 <script>
     const ctx = document.getElementById('myChart');

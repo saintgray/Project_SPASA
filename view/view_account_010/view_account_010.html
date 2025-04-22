@@ -63,7 +63,6 @@
     window.onload=function() {
         // target nodes
         const toggle_register = document.querySelector('#toggle-register > input');
-
         
         addEventListener("keypress", (e) => {
             // skip process otherwise keycode "Enter"
@@ -71,13 +70,36 @@
             if (toggle_register.checked) {
                 // Sign up
                 // TODO psudo code
-                alert('회원가입을 진행합니다..... [needs psudo code]');
+                const data = new FormData();
+                data.append('form_id', document.getElementById('form_id').value);
+                data.append('form_pw', document.getElementById('form_pw').value);
+                data.append('form_check_pw', document.getElementById('form_check_pw').value);
                 // psudo code
                 // (call sign up api) <-- if input values are validated
                 // (go to main) <-- when response status 200
                 //     else alert
                 //       (400: user duplicated)
                 //       (500: internal server error)
+                axios.post('/api/sign-up/', data)
+                .then((resp) => {
+                    if (resp.data.status==200) {
+                        alert('정상 등록되었습니다.');
+                        window.open('/view/main', '_self');
+                        return;
+                    }
+                    if (resp.data.status==400) {
+                        alert('이미 존재하는 아이디입니다');
+                        return;
+                    }
+                    alert('시스템 오류가 발생했습니다');
+                })
+                .catch((e) => {
+                    console.log(e);
+                    alert('시스템 오류가 발생했습니다');
+                })
+                
+                
+
             } else {
                 // Sign in
                 const data = new FormData();

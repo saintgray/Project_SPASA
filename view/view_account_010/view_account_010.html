@@ -8,6 +8,7 @@
     <link href="{% static 'css/common.css' %}" rel="stylesheet">
     <script src="{% static 'js/bootstrap.bundle.js' %}"> </script>
     <script src="{% static 'js/axios.js' %}"> </script>
+    <script src="{% static 'view_account_010.js' %}" type="module"> </script>
     <style>
         #login-form {
             border: 1px solid #DAD9D9;
@@ -22,8 +23,17 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            
-            
+        }
+        #login-form > div:first-child{
+            background: linear-gradient(
+                90deg,
+                #E3E3E3 0%, 
+                #8B8F8B 50%, 
+                #405269 100%
+            );
+            background-color: red;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
         }
         #login-form #logo {
             height:100%; 
@@ -59,81 +69,3 @@
 </body>
 
 </html>
-<script>
-    window.onload=function() {
-        // target nodes
-        const toggle_register = document.querySelector('#toggle-register > input');
-        
-        addEventListener("keypress", (e) => {
-            // skip process otherwise keycode "Enter"
-            if (e.keyCode !== 13) return;
-            if (toggle_register.checked) {
-                // Sign up
-                // TODO psudo code
-                const data = new FormData();
-                data.append('form_id', document.getElementById('form_id').value);
-                data.append('form_pw', document.getElementById('form_pw').value);
-                data.append('form_check_pw', document.getElementById('form_check_pw').value);
-                // psudo code
-                // (call sign up api) <-- if input values are validated
-                // (go to main) <-- when response status 200
-                //     else alert
-                //       (400: user duplicated)
-                //       (500: internal server error)
-                axios.post('/api/sign-up/', data)
-                .then((resp) => {
-                    if (resp.data.status==200) {
-                        alert('정상 등록되었습니다.');
-                        window.open('/view/main', '_self');
-                        return;
-                    }
-                    if (resp.data.status==400) {
-                        alert('이미 존재하는 아이디입니다');
-                        return;
-                    }
-                    alert('시스템 오류가 발생했습니다');
-                })
-                .catch((e) => {
-                    console.log(e);
-                    alert('시스템 오류가 발생했습니다');
-                })
-                
-                
-
-            } else {
-                // Sign in
-                const data = new FormData();
-                data.append('form_id', document.getElementById('form_id').value);
-                data.append('form_pw', document.getElementById('form_pw').value);
-                axios.post('/api/sign-in/', data)
-                .then(function(resp){
-                    if(resp.data.status===200) window.open('/view/main', '_self');
-                    if(resp.data.status===404) alert('아이디 혹은 비밀번호가 일치하지 않습니다');
-                    if(resp.data.status===500) alert('시스템 오류가 발생하였습니다');
-                })
-                .catch(function(err){
-                    alert('시스템 오류가 발생하였습니다');
-                });
-            }
-        });
-        
-        toggle_register.addEventListener('click', (e) => {
-            if (e.target.checked) {
-                document.querySelectorAll('#form-groups > .input-group input').forEach(e => {
-                    console.log(e);
-                    e.value='';
-                });
-                // [1] : password input group node
-                var confirm_password=document.querySelectorAll('.input-group')[1].cloneNode(true);
-                var input = confirm_password.querySelector('input');
-                input.id='form_check_pw';
-                input.placeholder='Check password';
-                document.getElementById('form-groups').appendChild(confirm_password);
-            } else {
-                var input_groups=document.querySelectorAll('#form-groups > .input-group');
-                input_groups[input_groups.length - 1].remove();
-            }
-        });
-    }
-    
-</script>

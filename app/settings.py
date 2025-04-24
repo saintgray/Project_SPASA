@@ -2,6 +2,8 @@
 from pathlib import Path
 import os
 from .router import TEMPLATE_ROUTERS
+from .router import MODULES_ROUTERS
+from .router import BASE_DIR
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -19,7 +21,7 @@ STATIC_URL = 'static/'
 
 STATIC_DIR=os.path.join(BASE_DIR / 'app', 'static')
 
-STATICFILES_DIRS=[STATIC_DIR,]
+STATICFILES_DIRS=MODULES_ROUTERS + TEMPLATE_ROUTERS + [STATIC_DIR]
 
 INSTALLED_APPS = [
     'django.contrib.admin',

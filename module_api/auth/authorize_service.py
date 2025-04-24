@@ -25,8 +25,8 @@ ACCESSIBLE_VIEW_KEY: Final='VIEW'
 @api_view(['POST'])
 def process_sign_in(request):
     print('progress sign in start ====================> ' + request.path_info)
-    user_id=request.POST.get('form_id')
-    user_pw=request.POST.get('form_pw')
+    user_id=request.POST.get('id')
+    user_pw=request.POST.get('password')
     try:
         user = Member(MemberModel.objects.get(id__iexact=user_id, password__exact=user_pw)).data
         request.session.__setitem__(UESR_KEY, user)
@@ -42,11 +42,11 @@ def process_sign_up(request):
     print('progress sign in start ====================> ' + request.path_info)
     x = request.data
     print(x)
-    print(x['form_id'])
-    print(x['form_pw'])
+    print(x['id'])
+    print(x['password'])
     try:
-        user_id=x['form_id']
-        pw = x['form_pw']
+        user_id=x['id']
+        pw = x['password']
         user = get_user(user_id)
         if user is not None:
             return JsonResponse({'status': 400})

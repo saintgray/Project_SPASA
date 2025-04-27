@@ -2,9 +2,12 @@
 <div class="header">
     <a href="/view/main"><img id="logo" src="{% static 'image/logo.png' %}"></a>
     <span class="icon-group">
-        <a href="/view/login"><img class="bs_icon" src="{% static 'image/person-circle.svg' %}"></a>
-        <a href="/view/login"><img class="bs_icon" src="{% static 'image/gear.svg' %}"></a>
-        <a href="/api/logout"><img class="bs_icon" src="{% static 'image/power.svg' %}"></a>
+        {% if request.session.USER.auth_level == 3 %}
+        <a id="account" href="/view/login"><img class="bs_icon" src="{% static 'image/person-circle.svg' %}"></a>
+        {% else %}
+        <a id="settings" href="/view/login"><img class="bs_icon" src="{% static 'image/gear.svg' %}"></a>
+        <a id="log-out"><img class="bs_icon" src="{% static 'image/power.svg' %}"></a>
+        {% endif %}
     </span>
 </div>
 

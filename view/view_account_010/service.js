@@ -33,33 +33,47 @@ class Service {
         var id = document.getElementById('form_id').value;
         var password = document.getElementById('form_pw').value;
         var check_password = document.getElementById('form_check_pw').value;
-        // TODO validate password
-        var validated=true;
-        if (validated) {
-            AccountService.sign_up(id, password)
-            .then((resp) => {
-                if (resp.data.status==200) {
-                    alert('정상 등록되었습니다.');
-                    window.open('/view/main', '_self');
-                    return;
-                }
-                if (resp.data.status==400) {
-                    alert('이미 존재하는 아이디입니다');
-                    return;
-                }
-                alert('시스템 오류가 발생했습니다');
-            })
-            .catch((e) => {
-                console.log(e);
-                alert('시스템 오류가 발생했습니다');
-            });
+        if (!id || !password) {
+           alert('사용하실 계정정보를 입력하세요');
+           return;
         }
+
+        if (!id.match('^[a-z|A-Z|\\d?]+$') || id.length > 15) {
+            alert('아이디는 영문, 숫자를 포함한 15 자리까지 사용가능합니다');
+            return;
+        }
+
+        if (password != check_password) {
+            alert('비밀번호가 일치하지 않습니다');
+            return;
+        }
+        
+        AccountService.sign_up(id, password)
+        .then((resp) => {
+            if (resp.data.status==200) {
+                alert('정상 등록되었습니다.');
+                window.open('/view/main', '_self');
+                return;
+            }
+            if (resp.data.status==400) {
+                alert('이미 존재하는 아이디입니다');
+                return;
+            }
+            alert('시스템 오류가 발생했습니다');
+        })
+        .catch((e) => {
+            console.log(e);
+            alert('시스템 오류가 발생했습니다');
+        });
+        
     }
     
     static do_sign_in = () => {
+        console.log('do sign in');
         var id = document.getElementById('form_id').value;
         var password = document.getElementById('form_pw').value;
-        AccountService.sign_in(id, pw)
+
+        AccountService.sign_in(id, password)
         .then(function(resp){
             if(resp.data.status===200) window.open('/view/main', '_self');
             if(resp.data.status===404) alert('아이디 혹은 비밀번호가 일치하지 않습니다');

@@ -1,19 +1,21 @@
 class AccountService {
 
     static sign_up = (id, pw) => {
-        // Sign up
-        // TODO psudo code
         const data = new FormData();
-        data.append('id', id);
-        data.append('password', pw);
-        return axios.post('/api/sign-up/', data)
+        data.append('user', JSON.stringify({ "id": id, "password":pw }));
+        return axios.post('/api/sign-up/', data);
     }
     
     static sign_in = (id, pw) => {
+        console.log(id);
+        console.log(pw);
         const data = new FormData();
-        data.append('id', id);
-        data.append('password', pw);
-        return axios.post('/api/sign-in/', data)
+        data.append('user', JSON.stringify({ "id": id, "password":pw }));
+        return axios.post('/api/sign-in/', data);
+    }
+
+    static sign_out = () => {
+        return axios.post('/api/sign-out');
     }
 }
 

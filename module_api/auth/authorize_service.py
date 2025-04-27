@@ -1,34 +1,23 @@
-from django.http import HttpResponse
+from django.conf import settings
 from django.http import JsonResponse
-from django.http.response import HttpResponseBase
-from django.http import HttpRequest
-from rest_framework import serializers
+from django.db import transaction
 from rest_framework.decorators import api_view
-from dataclasses import dataclass
-from module_api.decorator.request import post_request
 from module_entity.model_view import View
 from module_entity.model_view import ViewModel
 from module_entity.model_member import MemberModel
 from module_entity.model_member import Member
-from datetime import datetime
-from datetime import date
 import traceback
 import json 
-from typing import Final
-
-
-UESR_KEY: Final = 'USER'
-PUBLIC_AUTH_LEVEL: Final = 3
-MEMBER_USER_LEVEL: Final = 2
-ACCESSIBLE_VIEW_KEY: Final='VIEW'
+from module_api.enum import UESR_KEY, ACCESSIBLE_VIEW_KEY, MEMBER_USER_LEVEL
 
 @api_view(['POST'])
 def process_sign_in(request):
+    print(settings)
+    print(settings.SESSION_ENGINE)
     print('progress sign in start ====================> ' + request.path_info)
-    user_id=request.POST.get('id')
-    user_pw=request.POST.get('password')
-    try:
-        user = Member(MemberModel.objects.get(id__iexact=user_id, password__exact=user_pw)).data
+    body = json.loads(request.data['user'])
+    try: 
+        user = Member(MemberModel.objects.get(id__iexact=body['id'], password__exact=body['password'])).data
         request.session.__setitem__(UESR_KEY, user)
         request.session.__setitem__(ACCESSIBLE_VIEW_KEY, get_view_permissions(request))
         return JsonResponse({'status': 200})
@@ -40,34 +29,27 @@ def process_sign_in(request):
 @api_view(['POST'])
 def process_sign_up(request):
     print('progress sign in start ====================> ' + request.path_info)
-    x = request.data
-    print(x)
-    print(x['id'])
-    print(x['password'])
     try:
-        user_id=x['id']
-        pw = x['password']
-        user = get_user(user_id)
+        body = json.loads(request.POST.get('user'))
+        user = get_user(body['id'])
+        
         if user is not None:
-            return JsonResponse({'status': 400})
-            
-        mm = Member(data={
-                'id':user_id
-                ,'password':pw
-                ,'auth_level':'2'
-                ,'create_by':'APP'
-                ,'create_date':datetime.now()
-                ,'update_by':'APP'
-                ,'update_date':datetime.now()
-        }) 
-        print(datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
-        print(mm.is_valid(raise_exception=True))
-        mm.save()
-        return JsonResponse({'status': 200})
+            Member(data = user).save(request)
+            return JsonResponse({'status': 400}) # Duplicated User
+        with transaction.atomic():
+            body.__setitem__('auth_level', MEMBER_USER_LEVEL)
+            user = Member(data=body).save(request)
+            request.session.__setitem__(UESR_KEY, Member(user).data)
+            request.session.__setitem__(ACCESSIBLE_VIEW_KEY, get_view_permissions(request))
+            return JsonResponse({'status': 200})
     except Exception as e:
-        print('excpetion occured')
         print(traceback.format_exc())
         return JsonResponse({'status': 500})
+
+@api_view(['POST'])
+def process_sign_out(request):
+    print(request)
+    return JsonResponse({'status': 200})
 
 def get_view_permissions(request):
     user_auth_level=request.session.__getitem__(UESR_KEY).get('auth_level')
@@ -75,7 +57,7 @@ def get_view_permissions(request):
 
 def get_user(user_id):
     try:
-        user = Member(MemberModel.objects.get(id__iexact=user_id))
+        user = Member(MemberModel.objects.get(id__iexact=user_id)).data
     except MemberModel.DoesNotExist:
         user = None
     finally:

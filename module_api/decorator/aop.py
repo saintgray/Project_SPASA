@@ -1,7 +1,7 @@
 import time
 import traceback
 
-def aop_excution_time(func):
+def measure_excution_time(func):
     def wrapper(*args):
         try:
             start_time = time.time() * 1000
